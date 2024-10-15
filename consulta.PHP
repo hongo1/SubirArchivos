@@ -51,11 +51,11 @@
     <div class="container">
         <!-- Header con imágenes -->
         <div class="custom-header">
-            <a href="index.HTML">
+            <a href="index.html">
                 <img src="abinbev.png" alt="AB InBev">
             </a>
             <h2 class="text-center">Consulta de Embarques</h2>
-            <a href="index.HTML">
+            <a href="index.html">
                 <img src="logo gpo modelo.png" alt="Grupo Modelo">
             </a>
         </div>
