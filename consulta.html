@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consultar Archivos y Datos</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-image: url('fondo.jpg');
+            background-image: url('abinbev.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -49,26 +48,25 @@
 </head>
 <body>
     <div class="container">
-        <!-- Header con imágenes -->
         <div class="custom-header">
-            <a href="index.html">
-                <img src="abinbev.png" alt="AB InBev">
+            <a href="index.HTML">
+                <img src="Logo_Logistica.png" alt="AB InBev">
             </a>
             <h2 class="text-center">Consulta de Embarques</h2>
-            <a href="index.html">
+            <a href="index.HTML">
                 <img src="logo gpo modelo.png" alt="Grupo Modelo">
             </a>
         </div>
 
-        <!-- Formulario de búsqueda -->
+        <!-- Formulario de búsqueda con campos de fecha y embarque -->
         <form method="POST" class="mt-4">
-            <div class="input-group">
-                <input type="text" name="embarque" class="form-control" placeholder="Ingrese el embarque a buscar" required>
+            <div class="input-group mb-3">
+                <input type="text" name="fecha" class="form-control" placeholder="Ingrese la fecha a buscar (YYYY-MM-DD)">
+                <input type="text" name="embarque" class="form-control" placeholder="Ingrese el embarque a buscar">
                 <button type="submit" class="btn btn-primary">Buscar</button>
             </div>
         </form>
 
-        <!-- Tabla de datos -->
         <div class="table-responsive mt-4">
             <table class="table table-bordered table-striped table-dark">
                 <thead>
@@ -76,8 +74,8 @@
                         <th>Fecha</th>
                         <th>Hora</th>
                         <th>Embarque</th>
-                        <th>Archivo 1</th>
-                        <th>Archivo 2</th>
+                        <th>Certificado de calidad</th>
+                        <th>Orden de transporte</th>
                         <th>Archivo 3</th>
                         <th>Acciones</th> 
                     </tr>
@@ -103,35 +101,28 @@
                     $startFrom = ($page - 1) * $recordsPerPage; // Índice de inicio
 
                     // Comprobar si se ha enviado el formulario de búsqueda
-                    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['embarque'])) {
-                        $embarqueBuscado = $conn->real_escape_string($_POST['embarque']);
-                        $sql = "SELECT * FROM archivos WHERE campo3 = '$embarqueBuscado' LIMIT $startFrom, $recordsPerPage";
-                        $sqlCount = "SELECT COUNT(*) as total FROM archivos WHERE campo3 = '$embarqueBuscado'";
-                    }
-                    
+                    $sql = "SELECT * FROM archivos LIMIT $startFrom, $recordsPerPage"; // Default SQL
+                    $sqlCount = "SELECT COUNT(*) as total FROM archivos"; // Default Count SQL
 
-                    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['fecha'])) {
-                        $embarqueBuscado = $conn->real_escape_string($_POST['fecha']);
-                        $sql = "SELECT * FROM archivos WHERE campo1 = '$embarqueBuscado' LIMIT $startFrom, $recordsPerPage";
-                        $sqlCount = "SELECT COUNT(*) as total FROM archivos WHERE campo1 = '$embarqueBuscado'";
-                    }
+                    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                        $fechaBuscada = !empty($_POST['fecha']) ? $conn->real_escape_string($_POST['fecha']) : null;
+                        $embarqueBuscado = !empty($_POST['embarque']) ? $conn->real_escape_string($_POST['embarque']) : null;
 
-
-                     elseif (isset($_GET['eliminar'])) {
-                        // Código para eliminar embarque
-                        $embarqueEliminar = $conn->real_escape_string($_GET['eliminar']);
-                        $sqlEliminar = "DELETE FROM archivos WHERE campo3 = '$embarqueEliminar'";
-                        if ($conn->query($sqlEliminar) === TRUE) {
-                            echo "<div class='alert alert-success'>Embarque eliminado correctamente.</div>";
-                        } else {
-                            echo "<div class='alert alert-danger'>Error al eliminar: " . $conn->error . "</div>";
+                        // Verificar si ambos campos han sido ingresados
+                        if ($fechaBuscada && $embarqueBuscado) {
+                            $sql = "SELECT * FROM archivos WHERE campo1 LIKE '%$fechaBuscada%' AND campo3 = '$embarqueBuscado' LIMIT $startFrom, $recordsPerPage";
+                            $sqlCount = "SELECT COUNT(*) as total FROM archivos WHERE campo1 LIKE '%$fechaBuscada%' AND campo3 = '$embarqueBuscado'";
                         }
-                        // Mostrar todos los registros después de eliminar
-                        $sql = "SELECT * FROM archivos LIMIT $startFrom, $recordsPerPage";
-                        $sqlCount = "SELECT COUNT(*) as total FROM archivos";
-                    } else {
-                        $sql = "SELECT * FROM archivos LIMIT $startFrom, $recordsPerPage";
-                        $sqlCount = "SELECT COUNT(*) as total FROM archivos";
+                        // Si solo se ingresó fecha
+                        elseif ($fechaBuscada) {
+                            $sql = "SELECT * FROM archivos WHERE campo1 LIKE '%$fechaBuscada%' LIMIT $startFrom, $recordsPerPage";
+                            $sqlCount = "SELECT COUNT(*) as total FROM archivos WHERE campo1 LIKE '%$fechaBuscada%'";
+                        }
+                        // Si solo se ingresó embarque
+                        elseif ($embarqueBuscado) {
+                            $sql = "SELECT * FROM archivos WHERE campo3 = '$embarqueBuscado' LIMIT $startFrom, $recordsPerPage";
+                            $sqlCount = "SELECT COUNT(*) as total FROM archivos WHERE campo3 = '$embarqueBuscado'";
+                        }
                     }
 
                     $result = $conn->query($sql);
@@ -145,8 +136,8 @@
                                     <td>" . $row["campo1"]. "</td>
                                     <td>" . $row["campo2"]. "</td>
                                     <td>" . $row["campo3"]. "</td>
-                                    <td><a href='" . $row["archivo1"]. "' class='btn btn-warning'>Archivo 1</a></td>
-                                    <td><a href='" . $row["archivo2"]. "' class='btn btn-warning'>Archivo 2</a></td>
+                                    <td><a href='" . $row["archivo1"]. "' class='btn btn-warning'>Certificado</a></td>
+                                    <td><a href='" . $row["archivo2"]. "' class='btn btn-warning'>Orden</a></td>
                                     <td><a href='" . $row["archivo3"]. "' class='btn btn-warning'>Archivo 3</a></td>
                                     <td><a href='?eliminar=" . $row["campo3"] . "' class='btn btn-danger'>Eliminar</a></td>
                                   </tr>";
@@ -161,7 +152,6 @@
             </table>
         </div>
 
-        <!-- Paginador -->
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
                 <?php if ($page > 1): ?>
