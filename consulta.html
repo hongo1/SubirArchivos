@@ -15,7 +15,10 @@
             color: #FFD700;
         }
         h2 {
-            margin-top: 20px;
+            margin-top: 50px;
+            color: #fae001;
+        }
+        a {
             color: #fae001;
         }
         table {
@@ -52,7 +55,7 @@
             <a href="index.HTML">
                 <img src="Logo_Logistica.png" alt="AB InBev">
             </a>
-            <h2 class="text-center">Consulta de Embarques</h2>
+            <h2 class="text-center"><a href="index.HTML">Consulta de Embarques</a></h2>
             <a href="index.HTML">
                 <img src="logo gpo modelo.png" alt="Grupo Modelo">
             </a>
@@ -61,8 +64,9 @@
         <!-- Formulario de búsqueda con campos de fecha y embarque -->
         <form method="POST" class="mt-4">
             <div class="input-group mb-3">
-                <input type="text" name="fecha" class="form-control" placeholder="Ingrese la fecha a buscar (YYYY-MM-DD)">
-                <input type="text" name="embarque" class="form-control" placeholder="Ingrese el embarque a buscar">
+                <input type="text" name="fecha" class="form-control" onkeyup="searchList()" placeholder="Ingrese la fecha a buscar (DD-MM-YYYY)">
+
+                <input type="text" name="embarque" class="form-control" onkeyup="searchList()" placeholder="Ingrese el embarque a buscar">
                 <button type="submit" class="btn btn-primary">Buscar</button>
             </div>
         </form>
