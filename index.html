@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-image: url('fondo.jpg'); /* Imagen de fondo */
+            background-image: url('abinbev.jpg'); /* Imagen de fondo */
             background-size: cover; /* Ajusta el tamaño para cubrir toda la pantalla */
             background-position: center; /* Centra la imagen de fondo */
             background-repeat: no-repeat; /* Evita que la imagen se repita */
@@ -53,23 +53,23 @@
 <body>
     <div class="container">
         <div class="custom-header">
-            <a href="index.HTML">
-                <img src="abinbev.png" alt="AB InBev">
+            <a href="index.html">
+                <img src="Logo_Logistica.png" alt="AB InBev">
             </a>
           
-            <a href="index.HTML">
+            <a href="index.html">
                 <img src="logo gpo modelo.png" alt="Grupo Modelo">
             </a>
         </div>
         
         <!-- Botones principales -->
         <div class="text-center mb-4">
-            <button type="button" class="btn btn-success btn-lg" onclick="window.location.href='consulta.html'">Consultar</button>
+            <button type="button" class="btn btn-success btn-lg" onclick="window.location.href='consulta.php'">Consultar</button>
             <button type="button" class="btn btn-warning btn-lg" onclick="mostrarFormulario()">Nuevo Embarque</button>
         </div>
 
         <!-- Formulario de subida de archivos -->
-        <form id="formulario" action="conexion.PHP" method="POST" enctype="multipart/form-data" class="bg-dark p-4 rounded">
+        <form id="formulario" action="conexion.php" method="POST" enctype="multipart/form-data" class="bg-dark p-4 rounded">
             <div class="mb-3">
                 <label for="fecha" class="form-label">Fecha</label>
                 <input type="text" id="fecha" name="campo1" class="form-control" required readonly>
@@ -85,11 +85,11 @@
 
             <!-- Campos para subir archivos -->
             <div class="mb-3">
-                <label for="archivo1" class="form-label">Archivo 1:</label>
+                <label for="archivo1" class="form-label">Certificado de calidad:</label>
                 <input type="file" name="archivo1" class="form-control" required>
             </div>
             <div class="mb-3">
-                <label for="archivo2" class="form-label">Archivo 2:</label>
+                <label for="archivo2" class="form-label">Orden de transporte:</label>
                 <input type="file" name="archivo2" class="form-control" required>
             </div>
             <div class="mb-3">
