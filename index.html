@@ -7,6 +7,15 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        /*footer {
+            background-color: yellow;
+            color: black;
+            padding: 20px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }*/
         body {
             background-image: url('abinbev.jpg'); /* Imagen de fondo */
             background-size: cover; /* Ajusta el tamaño para cubrir toda la pantalla */
@@ -56,7 +65,6 @@
             <a href="index.html">
                 <img src="Logo_Logistica.png" alt="AB InBev">
             </a>
-          
             <a href="index.html">
                 <img src="logo gpo modelo.png" alt="Grupo Modelo">
             </a>
@@ -64,8 +72,18 @@
         
         <!-- Botones principales -->
         <div class="text-center mb-4">
-            <button type="button" class="btn btn-success btn-lg" onclick="window.location.href='consulta.php'">Consultar</button>
-            <button type="button" class="btn btn-warning btn-lg" onclick="mostrarFormulario()">Nuevo Embarque</button>
+            <button type="button" class="btn btn-dark btn-lg btn-block" onclick="window.location.href='consulta.php'">
+                <svg xmlns="http://www.w3.org/2000/svg" width="55" height="55" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                </svg> Consultar
+            </button>
+            <button type="button" class="btn btn-warning btn-lg btn-block" onclick="mostrarFormulario()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" fill="currentColor" class="bi bi-file-earmark-plus" viewBox="0 0 16 16">
+                    <path d="M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5"/>
+                    <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5z"/>
+                </svg>  Nuevo Embarque
+            </button>
         </div>
 
         <!-- Formulario de subida de archivos -->
@@ -85,11 +103,11 @@
 
             <!-- Campos para subir archivos -->
             <div class="mb-3">
-                <label for="archivo1" class="form-label">Certificado de calidad:</label>
+                <label for="archivo1" class="form-label">Subir aquí el Certificado de calidad:</label>
                 <input type="file" name="archivo1" class="form-control" required>
             </div>
             <div class="mb-3">
-                <label for="archivo2" class="form-label">Orden de transporte:</label>
+                <label for="archivo2" class="form-label">Subir aquí la Orden de transporte:</label>
                 <input type="file" name="archivo2" class="form-control" required>
             </div>
             <div class="mb-3">
@@ -99,7 +117,14 @@
 
             <!-- Botón de envío -->
             <div class="text-center">
-                <input type="submit" value="Subir" class="btn btn-warning">
+                <button type="submit" class="btn btn-warning">Subir <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud-arrow-up-fill" viewBox="0 0 16 16">
+                    <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m2.354 5.146a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0z"/>
+                </svg></button>
+            </div>
+
+            <!-- Mensaje de éxito -->
+            <div id="mensaje-exito" class="alert alert-success mt-3" style="display: none;">
+                ¡Formulario enviado con éxito!
             </div>
         </form>
     </div>
@@ -122,6 +147,37 @@
             document.getElementById('fecha').value = fecha;
             document.getElementById('hora').value = hora;
         }
+
+        // Manejo del formulario con AJAX
+        document.getElementById('formulario').addEventListener('submit', function(event) {
+            event.preventDefault(); // Evitar el envío predeterminado
+
+            // Crear un objeto FormData para enviar los archivos y los datos
+            const formData = new FormData(this);
+
+            // Enviar la solicitud AJAX
+            fetch('conexion.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(result => {
+                // Mostrar mensaje de éxito
+                document.getElementById('mensaje-exito').style.display = 'block';
+                
+                // Recargar la página después de 2 segundos
+                setTimeout(() => {
+                    location.reload();
+                }, 2000);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
     </script>
+    <!--<footer>
+        &copy; 2024 Departamento de logística. Todos los derechos reservados.
+    </footer>-->
 </body>
 </html>
+<!-- -->
